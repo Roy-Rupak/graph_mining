@@ -1,0 +1,118 @@
+\section{Methodology and Algorithm}
+\label{sec:methodology}
+
+This section discusses the characteristics and source of geographic map data,
+tentative clustering techniques and algorithms to find the shortest
+path between two data points.
+
+\subsection{Geographic Dataset}
+The data for this project will be collected from OpenStreetMap~\cite{osm},
+which is an open source platform for maintaining map data of the entire earth.
+There are several sources of getting the data, e.g., extracting directly from
+the website for a small region or the entire planet, or continent, country or
+state based data from Geofabrik Download Server~\cite{geo_dl_server}, etc.
+Data normally comes in the human-readable XML formatted .osm files.
+A basic format of the data presenting a datapoint by
+$node$ and a connected path by $way$ XML DOM element
+is demonstrated in Appendix~\ref{app:osm_data}.
+
+The $node$ and $way$ information can be used to construct a weighted adjacency
+matrix denoting the entire map, where weight of an edge is the distance between
+two nodes.
+In the preprocessing stage, if the whole adjacency matrix is too large for
+the system memory, this can be written to a file and kept in storage devices.
+Later, according to the application performance requirements, density of the
+data can be reduced by only keeping the vertices that are the intersection
+points of three or more edges and update weight accordingly,
+because intersection of two edges actually will denote a single road.
+
+\subsection{Clustering Techniques}
+
+One of the most vital goals of this project is to perform research on different
+clustering techniques starting from very basic clustering like K-means
+and hierarchical clustering to advanced techniques discussed in
+Sec.~\ref{sec:state_of_the_art}.~\cite{structural_attribute_similarity_clustering, deep_representation_graph_clustering, parallel_graph_algorithm}
+
+Specifically, some assumptions regarding transportation network can be leveraged
+to set as constraints in the clustering techniques in order to acquire
+faster convergence and ensure higher parallelism via lower connectivity or dependency among
+the clusters. As an initial stage thought, the total graph should be clustered
+in such a way that the clusters hold the following properties:
+\begin{itemize}
+	\item There are some common vertices (one or more than one) between the clusters named $gateways$.
+	\item The number of nodes in a cluster cannot exceed a maximum value.
+	\item The $gateways$ between two clusters cannot be connected to each other.
+\end{itemize}
+
+\subsection{Algorithm Implementation Plan}
+
+This section discusses the important data structures, heuristics,
+tentative algorithms and implementation plans.
+
+\subsubsection{Important Data Structures}
+
+The data structures stated in Appendix~\ref{app:data_structure} can be used in 
+the algorithms to denote a node and a cluster.
+
+\subsubsection{Associated Heuristics}
+
+Let us consider a node $n$,
+\\Real distance from source node to $n$,
+$g(n) = RealDist(source, n)$
+\\Eucledian distance from $n$ to destination node
+$h(n) = EucledianDist(n, dest)$
+\\Heuristic function of $n$,
+$f(n) = g(n) + h(n)$
+\\Heuristic value of a cluster $c$,
+$c = {n_1, n_2, ..., n_n}$
+$fc(c) = mean(f(n_1), f(n_2), ..., f(n_n))$
+
+\subsubsection{Tentative Shortest Path Parallel Algorithm}
+
+Using the above heuristics, the algorithm for finding a shortest
+path between two vertices after clustering can be devised as follows:
+
+\begin{algorithm}[H]
+    \label{alg:shortest_path_with_heuristics}
+    \caption{Find Shortest Path with Heuristics}
+    \begin{algorithmic}[1]
+    \renewcommand{\algorithmicrequire}{\textbf{Input:}}
+    \renewcommand{\algorithmicensure}{\textbf{Output:}}
+    \REQUIRE graph, source, dest
+    \ENSURE  path
+
+    \STATE $base\_dist = EucledianDist(source, dest)$
+    \STATE $dist = EucledianDist(curr\_node, dest)$
+    \IF {($dist < base\_dist$)}
+    \STATE Ignore the node
+    \ENDIF
+    \STATE $g(curr\_node) = RealDist(source, curr\_node)$
+    \STATE $h(curr\_node) = EucledianDist(curr\_node, dest)$
+    \STATE $f(curr\_node) = g(curr\_node) + h(curr\_node)$
+    \STATE Visit the next node that has lowest $f(curr\_node)$ value
+    \RETURN shortest $path$ found by the shortest path search algorithm
+    \end{algorithmic}
+\end{algorithm}
+\begin{algorithm}[H]
+    \label{alg:shortest_path_with_clustering}
+    \caption{Find Shortest Path with Clustering}
+    \begin{algorithmic}[1]
+    \renewcommand{\algorithmicrequire}{\textbf{Input:}}
+    \renewcommand{\algorithmicensure}{\textbf{Output:}}
+    \REQUIRE graph, source, dest, cluster\_list
+    \ENSURE  path
+
+    \IF {($source.cluster\_id == dest.cluster\_id$)}
+    \STATE $Find Shortest Path With Heuristics$
+    \STATE $(cluster\_list[cluster\_id], source, dest)$
+    \ELSE
+    \STATE Construct $graph_c$ representing the clusters as nodes and the $gateways$ as edges
+    \STATE weights of the edges = heuristics of the ​$gateway$ nodes​
+    \STATE heuristic value of each cluster = mean(heuristics of all nodes in cluster)​
+    \STATE $Find Shortest Path With Heuristics$
+    \STATE $(graph_c, source_c, dest_c)$
+    \STATE Apply ​$Find Shortest Path With Heuristics$ recursively in every cluster in that sequence to find the final path​
+    \ENDIF
+    \RETURN shortest $path$ found by the shortest path search algorithm
+    \end{algorithmic}
+\end{algorithm}

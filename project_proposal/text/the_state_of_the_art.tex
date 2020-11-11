@@ -1,0 +1,50 @@
+\section{State-of-the-art}
+\label{sec:state_of_the_art}
+
+Clustering the graph representation for geographical dataset continues to gain 
+huge attention as it shows its potential for solving many real world problems. 
+However, time taken by the graph algorithms is still an important challenge for 
+real-time analysis which can be minimized by using the HPC infrastructure.
+In~\cite{parallel_graph_algorithm} Bogle et. al. presents a new 
+distributed-memory, BFS based parallel algorithm to identify and remove 
+disconnected components or hinge vertices for graph-algorithms while 
+significantly improving the convergence of iterative solvers. This work is 
+extremely related in our context as the objective is to develop an efficient 
+and accurate parallel algorithm for geographical dataset using its graphical 
+representation.
+
+Clustering the graphs in each node plays an important role in solving this 
+scenario and state of the art researches 
+need to be explored in this regard. Efficient semi-supervised learning can be 
+one of the choice while doing the graph 
+clustering.
+Dhillon et. al.~\cite{kernel_kmeans} shows semi-supervised learning can improve 
+the  graph 
+clustering results and states an objective function for weighted kernel k-means 
+by using Hidden Markov Random Fields, certain class of constraint penalty 
+function and squared Euclidean Distance. 
+Kulis et. al.~\cite{semi_supervised_graph_clustering} proposes SS-KERNELKMEANS 
+to optimize a semi-supervised clustering objective for graph-base inputs by 
+proposing a more generalized formulation and also exhibits an equivalence 
+between the kernel k-means objective function
+and a special case of the HMRF-based
+semi-supervised clustering objective.
+
+Detecting densely connected groups in a large graph is also a primary 
+requirement in our approach. Zhou et. 
+al.~\cite{structural_attribute_similarity_clustering} proposes SA-Cluster, a 
+novel graph clustering algorithm based on both structural and attribute 
+similarities using a unified distance measure. This method considers the 
+heterogeneous vertex properties apart from the overall topological structure 
+for clustering and shows its effectiveness both theoritically and 
+experimentally.
+
+Even the possibilities of using deep learning in graph clustering is explored 
+by Tian et. al.~\cite{deep_representation_graph_clustering} and the work 
+illustrates that it has strong theoritical foundation. The autoencoder based 
+approach used in this paper also outperforms conventional spectral clustering 
+with much lower computational complexity.
+Bruna et. al.~\cite{community_detection} investigates a generic family of graph 
+neural networks and shows data-driven approaches to clustering can be used with 
+real dataset. Even it shows that the data-driven approach can consume less 
+computational steps while performing better than other rigid parametric models.

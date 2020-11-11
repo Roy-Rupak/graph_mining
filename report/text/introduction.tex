@@ -1,0 +1,45 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Graph representation of huge dataset used for solving real world problems
+is a popular format to feed computable data to the datamining applications.
+Oftentimes, these data structures can be complicated with respect to its
+connectivity among the elements of the representation. This dependency
+among the datapoints or nodes of the graph not only makes it a complex task
+to extract the insights from the data through datamining, but also renders
+the application workflow as a hindrance to the parallelization for
+efficiently leveraging high performance computing (HPC) infrastructures.
+The goal of the project is to perform research on applying clustering
+techniques on large graph representation of huge real world dataset
+in order to maximize data parallelism in the datamining models for
+utilizing HPC resources while ensuring reasonable accuracy of the system.
+
+In particular, the research intends to initialize satisfying the general
+motivation of applying graph clustering to improve parallelism
+by focusing into a special and narrow sector as a proof of concept.
+This sector deals with feeding large geographic map data to a system
+for preprocessing and formatting the data in graph representation
+where a coordinate, i.e., tuple of longitude and lattitude of
+a specific geographic point, is treated as a node and the connecting
+road between two coordinates is presented as the edge.
+This large graph presenting the map can be used by the system to
+solve different problems in the transportation system. For example,
+this data can be used for finding the shortest path between two points of the graph.
+
+Using legacy algorithms like Dijkstra's algorithm or even comparatively
+more modern techniques like A* search will pose
+immense time complexity if run on sequential systems.
+Performance maximization via using distributed HPC systems can only be possible
+if divide and conquer strategy can be applied on the data representation
+by clustering the graph into smaller chunks and run the algorithm
+upon the lower volume data in parallel, and finally combining
+all the small results to deduce the final outcome.
+
+Taking all these research requirements into consideration, this project proposes the following contributions.
+\begin{itemize}
+	\item A thorough survey on the state-of-the-art graph clustering techniques in general.
+	\item Application of different graph clustering on huge geographic data as a special case handling.
+	\item Execution of a shortest path algorithm as a proof of concept for evaluating the efficacy of different clustering techniques.
+	\item Verification of performance and accuracy of the application for different clustering on HPC systems via thorough experiments.
+	\item Comparison among different clustering techniques and recommendation for the specific data workload in concern, i.e. geographic map data.
+\end{itemize}

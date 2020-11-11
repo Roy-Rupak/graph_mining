@@ -1,0 +1,64 @@
+\section{Timeline}
+\label{sec:timeline}
+
+The timeline of our project is depicted in Table~\ref{table:timeline}
+
+\begin{table}[]
+	\caption{Tentative Timeline}
+	\begin{tabular}{|| c c ||} 
+		\hline
+		Task & Duration \\
+		[0.5ex] 
+		\hline\hline
+        Literature Review & 1 week​ \\
+        Dataset Analysis and Preprocessing​ & 1 week​ \\
+		Implement Clustering​ & 2 weeks​ \\
+		Implement Shortest Path Algorithms & 1 week​ \\
+		Develop User Interface & 1 week​ \\
+        Experimentation​ & 1 week​ \\
+        Report Writing​ & 1 week​ \\[1ex] 
+		\hline
+	\end{tabular}
+	\label{table:timeline}
+\end{table}
+
+\appendix
+
+\subsection{OSM XML Data Format}
+\label{app:osm_data}
+\begin{verbatim}
+	<?xml version="1.0"?>
+	<osm version="0.6">
+	<node id="298884269"
+		lat="54.0901746"
+		lon="12.2482632"
+		uid="46882" ... />
+		...
+	</node> ...
+	<way id="26659127" uid="55988" ...>
+		<nd ref="292403538"/>
+		<nd ref="298884289"/>
+		...
+		<tag k="highway"/>
+	</way>
+	</osm>
+\end{verbatim}
+
+\subsection{Data Structure}
+\label{app:data_structure}
+\begin{verbatim}
+struct Cluster{​
+int id;
+list AdjacencyClusterList;
+Cluster next_cluster;
+float getClusterHeuristic(s,t);
+};
+struct Node{
+int id;
+float latitude;
+float longitude;​
+list AdjacencyList;
+int cluster_id;
+float getHeuristic(s,t)​;
+};
+\end{verbatim}
